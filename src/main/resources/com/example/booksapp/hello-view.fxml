@@ -11,5 +11,6 @@
       <Button fx:id="saveButton" layoutX="565.0" layoutY="405.0" mnemonicParsing="false" onAction="#save" text="Save" />
       <Button fx:id="newBookButton" layoutX="87.0" layoutY="335.0" mnemonicParsing="false" onAction="#addBook" text="New Book" />
       <Button layoutX="14.0" layoutY="335.0" mnemonicParsing="false" onAction="#refreshData" text="Refresh" />
+      <Button layoutX="173.0" layoutY="336.0" mnemonicParsing="false" onAction="#deleteSelected" text="Delete selected" />
    </children>
 </AnchorPane>

@@ -1,9 +1,6 @@
 package com.example.booksapp.models;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import javafx.beans.property.*;
 
 public class Book {
     private int id;
@@ -13,6 +10,8 @@ public class Book {
     private int publishYear;
     private String publisher;
     private String description;
+    private BooleanProperty selected;
+
 
     public Book(int id, String authorsName, String authorsSurname, String title, int publishYear, String publisher, String description) {
         this.id = id;
@@ -22,6 +21,7 @@ public class Book {
         this.publishYear = publishYear;
         this.publisher = publisher;
         this.description = description;
+        this.selected = new SimpleBooleanProperty(false);
     }
 
     public Book(int id) {
@@ -84,6 +84,18 @@ public class Book {
         this.description = description;
     }
 
+    public boolean isSelected() {
+        return selected.get();
+    }
+
+    public BooleanProperty selectedProperty() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected.set(selected);
+    }
+
     @Override
     public String toString() {
         return "Book{" +
@@ -94,6 +106,7 @@ public class Book {
                 ", publishYear=" + getPublishYear() +
                 ", publisher=" + getPublisher() +
                 ", description=" + getDescription() +
+                ", selected=" + isSelected() +
                 '}';
     }
 

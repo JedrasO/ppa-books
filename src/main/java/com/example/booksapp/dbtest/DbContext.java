@@ -131,4 +131,24 @@ public class DbContext {
             e.printStackTrace();
         }
     }
+
+    public static void deleteBooks(List<Book> books) {
+        try (Connection connection = DriverManager.getConnection(url, "SA", "MyPass@word")) {
+            String createSql = """
+                DELETE FROM Book
+                WHERE [Id] = ?
+                """;
+
+            PreparedStatement statement = connection.prepareStatement(createSql);
+
+            for (Book book: books) {
+                statement.setInt(1, book.getId());
+                statement.executeUpdate();
+            }
+            connection.commit();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

@@ -2,6 +2,7 @@ package com.example.booksapp;
 
 import com.example.booksapp.dbtest.DbContext;
 import com.example.booksapp.models.Book;
+import javafx.beans.property.BooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -10,6 +11,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.util.StringConverter;
@@ -23,11 +25,18 @@ import java.util.List;
 public class HelloController {
     @FXML
     public TableView booksTable;
+    @FXML
     public Button newBookButton;
+    @FXML
     public Button saveButton;
 
     @FXML
     public void initialize() {
+        TableColumn<Book, BooleanProperty> checkBoxColumn = new TableColumn<>();
+        checkBoxColumn.setCellValueFactory(new PropertyValueFactory<>("selected"));
+        checkBoxColumn.setCellFactory(p -> new CheckBoxTableCell<>());
+        checkBoxColumn.setOnEditCommit(e -> e.getRowValue().setSelected(e.getNewValue().get()));
+
         TableColumn<Book, Integer> idColumn = new TableColumn<>("Id");
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
 
@@ -36,47 +45,35 @@ public class HelloController {
         TableColumn<Book, String> authorsNameColumn = new TableColumn<>("Name");
         authorsNameColumn.setCellValueFactory(new PropertyValueFactory<>("authorsName"));
         authorsNameColumn.setCellFactory(p -> new TextFieldTableCell<>(new DefaultStringConverter()));
-        authorsNameColumn.setOnEditCommit(e -> {
-            e.getRowValue().setAuthorsName(e.getNewValue());
-        });
+        authorsNameColumn.setOnEditCommit(e -> e.getRowValue().setAuthorsName(e.getNewValue()));
 
         TableColumn<Book, String> authorsSurnameColumn = new TableColumn<>("Surname");
         authorsSurnameColumn.setCellValueFactory(new PropertyValueFactory<>("authorsSurname"));
         authorsSurnameColumn.setCellFactory(p -> new TextFieldTableCell<>(new DefaultStringConverter()));
-        authorsSurnameColumn.setOnEditCommit(e -> {
-            e.getRowValue().setAuthorsSurname(e.getNewValue());
-        });
+        authorsSurnameColumn.setOnEditCommit(e -> e.getRowValue().setAuthorsSurname(e.getNewValue()));
 
         TableColumn<Book, String> titleColumn = new TableColumn<>("Title");
         titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
         titleColumn.setCellFactory(p -> new TextFieldTableCell<>(new DefaultStringConverter()));
-        titleColumn.setOnEditCommit(e -> {
-            e.getRowValue().setTitle(e.getNewValue());
-        });
+        titleColumn.setOnEditCommit(e -> e.getRowValue().setTitle(e.getNewValue()));
 
         TableColumn<Book, Integer> publishedColumn = new TableColumn<>("Published");
         publishedColumn.setCellValueFactory(new PropertyValueFactory<>("publishYear"));
         publishedColumn.setCellFactory(p -> new TextFieldTableCell<>(new IntegerStringConverter()));
-        publishedColumn.setOnEditCommit(e -> {
-            e.getRowValue().setPublishYear(e.getNewValue());
-        });
+        publishedColumn.setOnEditCommit(e -> e.getRowValue().setPublishYear(e.getNewValue()));
 
         TableColumn<Book, String> publisherColumn = new TableColumn<>("Published by");
         publisherColumn.setCellValueFactory(new PropertyValueFactory<>("publisher"));
         publisherColumn.setCellFactory(p -> new TextFieldTableCell<>(new DefaultStringConverter()));
-        publisherColumn.setOnEditCommit(e -> {
-            e.getRowValue().setPublisher(e.getNewValue());
-        });
+        publisherColumn.setOnEditCommit(e -> e.getRowValue().setPublisher(e.getNewValue()));
 
         TableColumn<Book, String> descriptionColumn = new TableColumn<>("Description");
         descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
         descriptionColumn.setCellFactory(p -> new TextFieldTableCell<>(new DefaultStringConverter()));
-        descriptionColumn.setOnEditCommit(e -> {
-            e.getRowValue().setDescription(e.getNewValue());
-        });
+        descriptionColumn.setOnEditCommit(e -> e.getRowValue().setDescription(e.getNewValue()));
 
         authorColumn.getColumns().addAll(authorsNameColumn, authorsSurnameColumn);
-        booksTable.getColumns().addAll(idColumn, authorColumn, titleColumn, publishedColumn, publisherColumn, descriptionColumn);
+        booksTable.getColumns().addAll(checkBoxColumn, idColumn, authorColumn, titleColumn, publishedColumn, publisherColumn, descriptionColumn);
         refreshData();
     }
 
@@ -88,6 +85,7 @@ public class HelloController {
         if (newBooks.size() > 0)
             DbContext.addBooks(newBooks);
         DbContext.updateBooks(books);
+        refreshData();
     }
 
     public void refreshData() {
@@ -99,5 +97,11 @@ public class HelloController {
         List<Book> data = new ArrayList(booksTable.getItems());
         data.add(new Book(data.stream().mapToInt(Book::getId).max().orElse(1) + 1));
         booksTable.setItems(FXCollections.observableArrayList(data));
+    }
+
+    public void deleteSelected() {
+        System.out.println("delete button");
+        DbContext.deleteBooks(booksTable.getItems().stream().filter(b -> ((Book)b).isSelected()).toList());
+        refreshData();
     }
 }
