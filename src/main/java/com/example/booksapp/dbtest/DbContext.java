@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DbContext {
-    private static final String url = "jdbc:sqlserver://localhost:1433;database=ppa;encrypt=true;trustServerCertificate=true;hostNameInCertificate=*.database.windows.net;loginTimeout=30";
+    private static final String url = "jdbc:sqlserver://localhost:57462;database=ppa;encrypt=true;trustServerCertificate=true;hostNameInCertificate=*.database.windows.net;loginTimeout=30";
 
     static {
         try {
@@ -54,6 +54,9 @@ public class DbContext {
 
     public static void main(String[] args) throws SQLException {
         try (Connection connection = DriverManager.getConnection(url, "SA", "MyPass@word")) {
+            System.out.println("connected");
+            System.out.println("check");
+            System.out.println("check v2");
             if (!tableExistsSQL(connection, "Book")) {
                 String createSql = """
                     CREATE TABLE Book(
