@@ -29,8 +29,8 @@ public class DbContext {
         List<Book> books = new ArrayList<>();
         try (Connection connection = DriverManager.getConnection(url, "SA", "MyPass@word")) {
             String sql = """
-                    SELECT Id, Authors_Name, Authors_Surname, Title, Publish_Year, Publisher, Description
-                    FROM Book;
+                    SELECT [Id], [Authors_Name], [Authors_Surname], [Title], [Publish_Year], [Publisher], [Description]
+                    FROM [Book];
                     """;
             ResultSet resultSet = connection.createStatement().executeQuery(sql);
             while (resultSet.next()) {
