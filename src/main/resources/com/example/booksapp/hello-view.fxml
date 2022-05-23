@@ -13,11 +13,19 @@
       <Button fx:id="newBookButton" layoutX="87.0" layoutY="335.0" mnemonicParsing="false" onAction="#addBook" text="New Book" />
       <Button layoutX="14.0" layoutY="335.0" mnemonicParsing="false" onAction="#refreshData" text="Refresh" />
       <Button layoutX="173.0" layoutY="336.0" mnemonicParsing="false" onAction="#deleteSelected" text="Delete selected" />
-      <AnchorPane layoutX="637.0" layoutY="14.0" prefHeight="417.0" prefWidth="315.0">
+      <AnchorPane id="A" layoutX="637.0" layoutY="14.0" prefHeight="417.0" prefWidth="315.0">
          <children>
-            <TextField fx:id="authorsNameInputBox" layoutX="127.0" layoutY="14.0" />
+            <TextField id="ANametxt" fx:id="authorsNameInputBox" layoutX="127.0" layoutY="5.0" />
             <Label layoutX="22.0" layoutY="18.0" prefHeight="17.0" prefWidth="90.0" text="Authors Name" />
             <Button fx:id="filterButton" layoutX="6.0" layoutY="391.0" mnemonicParsing="false" onAction="#filter" text="Filter" />
+            <TextField id="ASurnametxt" fx:id="authorsSurnameInputBox" layoutX="127.0" layoutY="49.0" />
+            <Label layoutX="22.0" layoutY="53.0" prefHeight="18.0" prefWidth="106.0" text="Authors Surname" />
+            <TextField id="Titletxt" fx:id="titleInputBox" layoutX="127.0" layoutY="85.0" />
+            <Label layoutX="22.0" layoutY="89.0" prefHeight="17.0" prefWidth="90.0" text="Title" />
+            <TextField id="Publishertxt" fx:id="publisherInputBox" layoutX="127.0" layoutY="123.0" />
+            <Label layoutX="22.0" layoutY="127.0" prefHeight="17.0" prefWidth="90.0" text="Publisher" />
+            <TextField id="Descryptiontxt" fx:id="descryptionInputBox" layoutX="127.0" layoutY="159.0" />
+            <Label layoutX="22.0" layoutY="163.0" prefHeight="17.0" prefWidth="90.0" text="Descryption" />
          </children>
       </AnchorPane>
    </children>
