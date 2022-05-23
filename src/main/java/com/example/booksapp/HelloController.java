@@ -27,6 +27,10 @@ public class HelloController {
     @FXML
     public Button saveButton;
     public TextField authorsNameInputBox;
+    public TextField authorsSurnameInputBox;
+    public TextField titleInputBox;
+    public TextField publisherInputBox;
+    public TextField descryptionInputBox;
     public Button filterButton;
 
     @FXML
@@ -106,11 +110,9 @@ public class HelloController {
 
     public void filter() {
         // przjerzec wszystkie pola
-        authorsNameInputBox.getText();
-//        List<Book> filtered = DbContext.getBooksFilteres(arg1, arg2, arg3...);
-//        booksTable.setItems(FXCollections.observableArrayList(filtered));
-//        booksTable.refresh();
+        List<Book> filtered = DbContext.getBooksFiltered(authorsNameInputBox.getText(), authorsSurnameInputBox.getText(), titleInputBox.getText(), publisherInputBox.getText(), descryptionInputBox.getText());
+        booksTable.setItems(FXCollections.observableArrayList(filtered));
+        booksTable.refresh();
     }
-
 
 }

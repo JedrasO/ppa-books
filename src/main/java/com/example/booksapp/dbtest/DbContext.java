@@ -50,13 +50,74 @@ public class DbContext {
         }
         return books;
     }
+    public static List<Book> getBooksFiltered(String inpName, String inpSurname, String inpTitle, String inpPublisher, String inpDescryption) {
+        List<String> inputs = new ArrayList<>();
+        inputs.add(inpName);
+        inputs.add(inpSurname);
+        inputs.add(inpTitle);
+        inputs.add(inpPublisher);
+        inputs.add(inpDescryption);
+        List<Book> books = new ArrayList<>();
+        try (Connection connection = DriverManager.getConnection(url, "SA", "MyPass@word")) {
+            String sql = """
+                    SELECT [Id], [Authors_Name], [Authors_Surname], [Title], [Publish_Year], [Publisher], [Description]
+                    FROM [Book]
+                    
+                    """;
+            boolean hasinputs = false;
+            int inpindex = 0;
+            for(String input : inputs){
+                inpindex ++;
+                if (input!=""){
+                    if(!hasinputs){
+                        sql += "WHERE ";
+                        hasinputs = true;
+                    } else sql +=" AND ";
+                    switch (inpindex){
+                        case 1:
+                            sql += "[Authors_Name] = '" + inpName + "'";
+                            break;
+                            case 2:
+                            sql += "[Authors_Surname] = '" + inpSurname + "'";
+                            break;
+                            case 3:
+                            sql += "[Title] = '" + inpTitle + "'";
+                            break;
+                            case 4:
+                            sql += "[Publisher] = '" + inpPublisher + "'";
+                            break;
+                            case 5:
+                            sql += "[Description] = '" + inpDescryption + "'";
+                            break;
+
+                    }
+                }
+            }
+            sql +=";";
+
+            ResultSet resultSet = connection.createStatement().executeQuery(sql);
+            while (resultSet.next()) {
+                int id = resultSet.getInt(1);
+                String authorsName = resultSet.getString(2);
+                String authorsSurname = resultSet.getString(3);
+                String title = resultSet.getString(4);
+                int publishYear = resultSet.getInt(5);
+                String publisher = resultSet.getString(6);
+                String description = resultSet.getString(7);
+                books.add(new Book(id, authorsName, authorsSurname, title, publishYear, publisher, description));
+            }
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return books;
+    }
 
 
     public static void main(String[] args) throws SQLException {
         try (Connection connection = DriverManager.getConnection(url, "SA", "MyPass@word")) {
             System.out.println("connected");
-            System.out.println("check");
-            System.out.println("check v2");
             if (!tableExistsSQL(connection, "Book")) {
                 String createSql = """
                     CREATE TABLE Book(
